@@ -1,0 +1,6 @@
+[submodule "dizertatie-ie-2026-frontend"]
+	path = dizertatie-ie-2026-frontend
+	url = https://github.com/AnaMTF/dizertatie-ie-2026-frontend
+[submodule "dizertatie-ie-2026-backend"]
+	path = dizertatie-ie-2026-backend
+	url = https://github.com/AnaMTF/dizertatie-ie-2026-backend
