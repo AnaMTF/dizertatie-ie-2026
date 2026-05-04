@@ -4,3 +4,12 @@
 [submodule "dizertatie-ie-2026-backend"]
 	path = dizertatie-ie-2026-backend
 	url = https://github.com/AnaMTF/dizertatie-ie-2026-backend
+[submodule "dizertatie-ie-2026-consumer"]
+	path = dizertatie-ie-2026-consumer
+	url = https://github.com/AnaMTF/dizertatie-ie-2026-consumer
+[submodule "dizertatie-ie-2026-rabbitmq"]
+	path = dizertatie-ie-2026-rabbitmq
+	url = https://github.com/AnaMTF/dizertatie-ie-2026-rabbitmq
+[submodule "dizertatie-ie-2026-postgresql"]
+	path = dizertatie-ie-2026-postgresql
+	url = https://github.com/AnaMTF/dizertatie-ie-2026-postgresql
