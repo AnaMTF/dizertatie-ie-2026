@@ -23,6 +23,7 @@ npm run dev
 ```sh
 cd dizertatie-ie-2026-backend
 npm install
+cp .env.example .env
 npm run dev
 ```
 
@@ -43,5 +44,18 @@ cd dizertatie-ie-2026-consumer
 python3 -m venv .venv
 . .venv/bin/activate
 pip3 install -r requirements.txt
+cp .env.example .env
 python3 main.py
 ```
+
+The scan flow now uses RabbitMQ in both directions:
+
+1. Backend publishes scan jobs to `scan.jobs.v1` after upload.
+2. Python worker consumes jobs, runs TensorFlow/Keras inference, and publishes results to `scan.results.v1`.
+3. Backend consumes result events and updates scan status/results.
+
+Before running, ensure model configuration is correct:
+
+- `DEFAULT_MODEL_PATH` in `dizertatie-ie-2026-consumer/.env`
+- `MODEL_MAPPING` in `dizertatie-ie-2026-consumer/config.py`
+- `MODEL_CLASSES` in `dizertatie-ie-2026-consumer/config.py`
