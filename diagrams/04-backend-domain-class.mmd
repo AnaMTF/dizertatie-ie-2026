@@ -1,0 +1,107 @@
+classDiagram
+    class Patient {
+        +uuid: UUID
+        +email: string
+        +passwordHash: string
+        +firstName: string
+        +lastName: string
+        +sex: Man|Woman
+        +dateOfBirth: date
+        +height: float
+        +weight: float
+        +additionalMedicalInfo: text
+    }
+
+    class Doctor {
+        +uuid: UUID
+        +email: string
+        +passwordHash: string
+        +firstName: string
+        +lastName: string
+        +specialization: medicalSpecialty
+    }
+
+    class Clinic {
+        +uuid: UUID
+        +name: string
+        +address: string
+    }
+
+    class Appointment {
+        +uuid: UUID
+        +date: YYYY-MM-DD
+        +timeSlot: string
+        +status: scheduled|confirmed|cancelled|rescheduled|completed
+        +cancellationReason: text
+        +notes: text
+    }
+
+    class AppointmentDocument {
+        +uuid: UUID
+        +filePath: string
+        +mimeType: string
+        +fileName: string
+    }
+
+    class Scan {
+        +uuid: UUID
+        +status: processing|completed|failed
+        +bodyPart: string
+        +imageType: string
+        +results: JSON
+    }
+
+    class ScanImage {
+        +uuid: UUID
+        +filePath: string
+        +mimeType: string
+    }
+
+    class Notification {
+        +uuid: UUID
+        +type: scan_results_ready|follow_up_reminder|appointment_confirmed|appointment_cancelled|system_message
+        +title: string
+        +body: text
+        +data: JSON
+        +readAt: datetime?
+    }
+
+    class PushSubscription {
+        +uuid: UUID
+        +endpoint: text
+        +p256dh: text
+        +auth: text
+        +userAgent: string?
+    }
+
+    class FollowUpReminder {
+        +uuid: UUID
+        +reminderType: string
+        +sentAt: datetime
+    }
+
+    class AppointmentRecommendation {
+        +uuid: UUID
+        +source: signup|profile_update|manual_refresh
+        +specialty: string
+        +score: float
+        +priority: low|medium|high
+        +rationale: text
+        +reasonCodes: JSON
+        +riskSignals: JSON
+        +engineVersion: string
+        +generatedAt: datetime
+    }
+
+    Clinic "1" --> "many" Doctor : employs
+    Clinic "1" --> "many" Appointment : hosts
+    Patient "1" --> "many" Appointment : books
+    Doctor "1" --> "many" Appointment : attends
+    Appointment "1" --> "many" AppointmentDocument : has
+    Patient "1" --> "many" Scan : owns
+    Scan "1" --> "many" ScanImage : contains
+    Patient "1" --> "many" Notification : receives
+    Patient "1" --> "many" PushSubscription : registers
+    Patient "1" --> "many" FollowUpReminder : accumulates
+    Appointment "1" --> "many" FollowUpReminder : triggers
+    Patient "1" --> "many" AppointmentRecommendation : gets

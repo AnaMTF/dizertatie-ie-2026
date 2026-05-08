@@ -1,0 +1,34 @@
+sequenceDiagram
+    actor Patient
+    participant Page as appointments.jsx
+    participant Modal as create-appointment.jsx
+    participant API as Backend appointment API
+    participant Models as Appointment + Doctor + Clinic models
+    actor Doctor
+
+    Patient->>Page: open Appointments page
+    Page->>API: GET /appointment
+    API->>Models: load patient appointments
+    API-->>Page: appointments list
+
+    Patient->>Modal: open Create Appointment dialog
+    Modal->>API: GET /doctor
+    Modal->>API: GET /clinic
+    API-->>Modal: doctors and clinics
+
+    Patient->>Modal: choose specialty
+    Patient->>Modal: choose doctor and clinic
+    Patient->>Modal: choose date
+    Modal->>API: GET /appointment/availability?doctorUuid&date&clinicUuid
+    API-->>Modal: availableSlots[]
+    Patient->>Modal: choose time, notes, optional documents
+    Modal->>API: POST /appointment
+    API->>Models: create appointment and documents
+    API-->>Modal: 201 created appointment
+    Modal-->>Page: onCreated callback
+    Page->>API: refresh GET /appointment
+    API-->>Page: updated appointment list
+
+    Doctor->>API: update status or manage attached documents
+    API->>Models: persist appointment changes
+    API-->>Page: new appointment state on next refresh
