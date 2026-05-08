@@ -1,0 +1,33 @@
+flowchart TB
+    subgraph client[Client runtime]
+        browser[Browser]
+        sw[Service Worker\n/sw.js]
+    end
+
+    subgraph appHost[Application host]
+        frontend[Frontend dev server\nReact Router + Vite\nport 5173]
+        backend[Backend service\nExpress\nport 9000]
+        consumer[Worker process\nPython main.py]
+        uploads[(uploads/)]
+        consumerModels[(consumer/models/)]
+        sqlite[(dizertatie.db)]
+    end
+
+    subgraph containers[Docker services]
+        rabbit[(RabbitMQ 4 Management\n5672 + 15672)]
+        postgres[(PostgreSQL)]
+        adminer[Adminer\nport 8080]
+    end
+
+    browser --> frontend
+    browser --> sw
+    frontend -->|HTTP JSON and multipart| backend
+    sw -->|push events| browser
+    backend -->|default local DB| sqlite
+    backend -->|optional external DB| postgres
+    adminer --> postgres
+    backend -->|publish jobs / consume results| rabbit
+    consumer -->|consume jobs / publish results| rabbit
+    backend -->|save and optimize images| uploads
+    consumer -->|read scan files from shared path| uploads
+    consumer -->|load .keras files and class labels| consumerModels

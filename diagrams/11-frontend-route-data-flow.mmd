@@ -1,0 +1,56 @@
+flowchart TB
+    subgraph shell[Application shell]
+        root[root.jsx]
+        navbar[Navbar]
+        authUtil[auth.js\ngetUser/getToken/setAuth/clearAuth]
+    end
+
+    subgraph routes[Pages]
+        home[index.jsx]
+        profile[profile.jsx]
+        appointments[appointments.jsx]
+        aiScan[ai-scan.jsx]
+        notifications[notifications.jsx]
+        doctorAppointments[doctor-appointments.jsx]
+    end
+
+    subgraph featureComponents[Feature components]
+        login[authentication/login.jsx]
+        register[authentication/register.jsx]
+        createAppointment[appointments/create-appointment.jsx]
+        updateAppointment[appointments/update-appointment.jsx]
+        cancelAppointment[appointments/cancel-appointment.jsx]
+        createScan[scans/create-scan.jsx]
+        attachments[appointments/appointment-attachments.jsx]
+    end
+
+    subgraph backendApi[Backend API]
+        authApi[Auth API]
+        appointmentApi[Appointment API]
+        scanApi[Scan API]
+        notificationApi[Notification and Push API]
+    end
+
+    authUtil --> root --> navbar
+    navbar --> home
+    navbar --> profile
+    navbar --> appointments
+    navbar --> aiScan
+    navbar --> notifications
+    navbar --> doctorAppointments
+
+    login --> authApi --> authUtil
+    register --> authApi
+    appointments --> appointmentApi
+    appointments --> createAppointment --> appointmentApi
+    appointments --> updateAppointment --> appointmentApi
+    appointments --> cancelAppointment --> appointmentApi
+    doctorAppointments --> appointmentApi
+    doctorAppointments --> attachments --> appointmentApi
+    aiScan --> createScan --> scanApi
+    aiScan --> scanApi
+    notifications --> notificationApi
+
+    authUtil -. AUTH_CHANGED_EVENT .-> root
+    notifications -. NOTIFICATIONS_UNREAD_CHANGED_EVENT .-> navbar
+    aiScan -. polling while processing .-> scanApi
