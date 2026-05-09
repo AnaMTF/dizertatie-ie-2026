@@ -37,6 +37,22 @@ docker compose up -d
 
 Open web UI using http://localhost:15672
 
+### PostgreSQL start (Docker Compose):
+
+```sh
+cd dizertatie-ie-2026-postgresql
+docker compose up -d
+```
+
+This setup follows the official `postgres` Docker image Compose example. With `POSTGRES_PASSWORD=example`, the default credentials are:
+
+- Server: `db`
+- Username: `postgres`
+- Password: `example`
+- Database: `postgres`
+
+Open Adminer at http://localhost:8080.
+
 ### Tensorflow classification service start:
 
 ```sh
