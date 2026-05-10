@@ -17,8 +17,8 @@ flowchart LR
 
     push[Web Push Service]
 
-    patient -->|authenticate, book, upload scans, view results| frontend
-    doctor -->|manage appointments| frontend
+    patient -->|authenticate, book, upload scans, view results, read blog| frontend
+    doctor -->|manage appointments, add diagnoses and follow-up dates, view profile| frontend
     frontend -->|REST API + Bearer token| backend
     backend -->|persist entities| db
     backend -->|write uploaded files| uploads

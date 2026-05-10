@@ -29,6 +29,14 @@ sequenceDiagram
     Page->>API: refresh GET /appointment
     API-->>Page: updated appointment list
 
-    Doctor->>API: update status or manage attached documents
-    API->>Models: persist appointment changes
+    Doctor->>API: PATCH /appointment/:uuid (diagnosis, prescription, follow-up date)
+    API->>Models: persist doctor outcome fields
     API-->>Page: new appointment state on next refresh
+
+    Note over Patient,Doctor: Doctor sets doctorFollowUpDate → patient sees "Book follow-up" button
+    Patient->>Page: click "Book follow-up"
+    Page->>Modal: open create-appointment pre-filled with specialty and follow-up date
+    Patient->>Modal: confirm follow-up appointment details
+    Modal->>API: POST /appointment
+    API->>Models: create follow-up appointment
+    API-->>Page: follow-up appointment created

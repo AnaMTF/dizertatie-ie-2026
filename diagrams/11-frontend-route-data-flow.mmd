@@ -12,6 +12,9 @@ flowchart TB
         aiScan[ai-scan.jsx]
         notifications[notifications.jsx]
         doctorAppointments[doctor-appointments.jsx]
+        doctorProfile[doctor-profile.jsx]
+        blog[blog.jsx]
+        blogPost[blog-post.jsx]
     end
 
     subgraph featureComponents[Feature components]
@@ -20,6 +23,7 @@ flowchart TB
         createAppointment[appointments/create-appointment.jsx]
         updateAppointment[appointments/update-appointment.jsx]
         cancelAppointment[appointments/cancel-appointment.jsx]
+        doctorUpdateAppointment[appointments/doctor-update-appointment.jsx]
         createScan[scans/create-scan.jsx]
         attachments[appointments/appointment-attachments.jsx]
     end
@@ -29,6 +33,7 @@ flowchart TB
         appointmentApi[Appointment API]
         scanApi[Scan API]
         notificationApi[Notification and Push API]
+        blogApi[Blog search API\npgvector semantic search]
     end
 
     authUtil --> root --> navbar
@@ -38,6 +43,8 @@ flowchart TB
     navbar --> aiScan
     navbar --> notifications
     navbar --> doctorAppointments
+    navbar --> doctorProfile
+    navbar --> blog
 
     login --> authApi --> authUtil
     register --> authApi
@@ -46,7 +53,12 @@ flowchart TB
     appointments --> updateAppointment --> appointmentApi
     appointments --> cancelAppointment --> appointmentApi
     doctorAppointments --> appointmentApi
+    doctorAppointments --> doctorUpdateAppointment --> appointmentApi
     doctorAppointments --> attachments --> appointmentApi
+    doctorProfile --> appointmentApi
+    blog --> blogApi
+    blog -. slug link .-> blogPost
+    blogPost -. book appointment CTA .-> appointments
     aiScan --> createScan --> scanApi
     aiScan --> scanApi
     notifications --> notificationApi
