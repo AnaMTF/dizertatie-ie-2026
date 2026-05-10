@@ -34,6 +34,11 @@ classDiagram
         +status: scheduled|confirmed|cancelled|rescheduled|completed
         +cancellationReason: text
         +notes: text
+        +doctorDiagnosis: text
+        +doctorPrescription: text
+        +doctorFollowUpRecommendation: text
+        +doctorFollowUpDate: YYYY-MM-DD
+        +doctorResultsUpdatedAt: datetime
     }
 
     class AppointmentDocument {
@@ -105,3 +110,8 @@ classDiagram
     Patient "1" --> "many" FollowUpReminder : accumulates
     Appointment "1" --> "many" FollowUpReminder : triggers
     Patient "1" --> "many" AppointmentRecommendation : gets
+
+    class PostEmbedding {
+        +slug: string PK
+        +embedding: vector 384-dim
+    }

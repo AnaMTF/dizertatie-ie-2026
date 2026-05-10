@@ -16,6 +16,7 @@ flowchart TB
         scanRouter[scanRouter]
         notificationRouter[notificationRouter]
         pushRouter[pushRouter]
+        blogRouter[blogRouter]
     end
 
     subgraph controllers[Controllers]
@@ -28,6 +29,7 @@ flowchart TB
         scanController[scan-controller]
         notificationController[notification-controller]
         pushController[push-controller]
+        blogController[blog-controller]
     end
 
     subgraph services[Core services]
@@ -41,6 +43,7 @@ flowchart TB
         notificationService[notification-service]
         pushService[web-push-service]
         followUpService[follow-up-reminder-service]
+        blogEmbeddingService[blog-embedding-service\npgvector cosine search]
     end
 
     subgraph persistence[Persistence]
@@ -58,6 +61,7 @@ flowchart TB
     entry --> scanRouter
     entry --> notificationRouter
     entry --> pushRouter
+    entry --> blogRouter
     entry --> resultConsumer
     entry --> schedulers
 
@@ -73,4 +77,5 @@ flowchart TB
     pushController --> pushService
     resultConsumer --> rabbitService --> scanResultService --> notificationService
     schedulers --> followUpService --> notificationService
+    blogRouter --> blogController --> blogEmbeddingService --> models
     models --> database
