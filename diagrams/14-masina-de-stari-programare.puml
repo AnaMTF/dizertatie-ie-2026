@@ -1,0 +1,19 @@
+@startuml
+[*] --> Programata : pacientul creeaza programarea
+
+Programata --> Confirmata : medicul confirma consultatia
+Programata --> Reprogramata : pacientul sau medicul modifica slotul
+Programata --> Anulata : pacientul sau medicul anuleaza
+
+Reprogramata --> Confirmata : medicul confirma noul slot
+Reprogramata --> Reprogramata : modificare repetata de slot
+Reprogramata --> Anulata : anulare dupa reprogramare
+
+Confirmata --> Finalizata : medicul completeaza consultatia
+Confirmata --> Reprogramata : schimbare de data sau interval
+Confirmata --> Anulata : anulare inainte de consultatie
+
+Finalizata --> [*]
+Anulata --> [*]
+
+@enduml

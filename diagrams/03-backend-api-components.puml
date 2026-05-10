@@ -1,0 +1,81 @@
+@startuml
+left to right direction
+
+package Bootstrap {
+  component "index.js" as entry
+  component "Helmet + CORS + Morgan\nBody parsing + rate limiting" as middleware
+  component startSchedulers as schedulers
+  component "Scan result consumer startup" as resultConsumer
+}
+
+package "API routers" {
+  component authenticationRouter as authRouter
+  component patientRouter as patientRouter
+  component doctorRouter as doctorRouter
+  component clinicRouter as clinicRouter
+  component appointmentRouter as appointmentRouter
+  component appointmentRecommendationRouter as recommendationRouter
+  component scanRouter as scanRouter
+  component notificationRouter as notificationRouter
+  component pushRouter as pushRouter
+  component blogRouter as blogRouter
+}
+
+package Controllers {
+  component "authentication-controller" as authController
+  component "patient-controller" as patientController
+  component "doctor-controller" as doctorController
+  component "clinic-controller" as clinicController
+  component "appointment-controller" as appointmentController
+  component "appointment-recommendation-controller" as recommendationController
+  component "scan-controller" as scanController
+  component "notification-controller" as notificationController
+  component "push-controller" as pushController
+  component "blog-controller" as blogController
+}
+
+package "Core services" {
+  component "authentication-service" as authService
+  component "appointment-service" as appointmentService
+  component "appointment-recommendation-service" as recommendationService
+  component "appointment-recommendation-engine" as recommendationEngine
+  component "scan-service" as scanService
+  component "scan-result-service" as scanResultService
+  component "rabbitmq-service" as rabbitService
+  component "notification-service" as notificationService
+  component "web-push-service" as pushService
+  component "follow-up-reminder-service" as followUpService
+  component "blog-embedding-service\npgvector cosine search" as blogEmbeddingService
+}
+
+database "Sequelize database" as database
+
+entry --> middleware
+entry --> authRouter
+entry --> patientRouter
+entry --> doctorRouter
+entry --> clinicRouter
+entry --> appointmentRouter
+entry --> recommendationRouter
+entry --> scanRouter
+entry --> notificationRouter
+entry --> pushRouter
+entry --> blogRouter
+entry --> resultConsumer
+entry --> schedulers
+
+authRouter --> authController --> authService --> database
+patientRouter --> patientController --> database
+doctorRouter --> doctorController --> database
+clinicRouter --> clinicController --> database
+appointmentRouter --> appointmentController --> appointmentService --> database
+recommendationRouter --> recommendationController --> recommendationService --> recommendationEngine --> database
+scanRouter --> scanController --> scanService --> database
+notificationRouter --> notificationController --> notificationService --> database
+pushRouter --> pushController --> notificationService
+pushController --> pushService
+resultConsumer --> rabbitService --> scanResultService --> notificationService
+schedulers --> followUpService --> notificationService
+blogRouter --> blogController --> blogEmbeddingService --> database
+
+@enduml

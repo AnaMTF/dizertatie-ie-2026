@@ -1,0 +1,64 @@
+@startuml
+left to right direction
+
+package "Frontend" {
+  [Pagini React Router] as Pages
+  [Componente autentificare] as AuthComp
+  [Componente programari] as AppComp
+  [Componente scan AI] as ScanComp
+  [Componente notificari] as NotifComp
+  [Modul blog] as BlogComp
+}
+
+package "Backend Node.js" {
+  [Routers API] as Routers
+  [Controllers] as Controllers
+  [Servicii programari] as AppointmentSvc
+  [Servicii scan] as ScanSvc
+  [Servicii notificari] as NotifSvc
+  [Servicii recomandari] as RecoSvc
+  [Serviciu cautare blog\npgvector] as BlogSearchSvc
+  [Consumator rezultate scan] as ScanResultConsumer
+}
+
+package "Infrastructura" {
+  database "PostgreSQL sau SQLite" as DB
+  queue "RabbitMQ" as MQ
+  folder "Stocare uploads" as Uploads
+  [Worker Python inferenta] as Worker
+  [Modele TensorFlow Keras] as Models
+  [Web Push] as Push
+}
+
+Pages --> AuthComp
+Pages --> AppComp
+Pages --> ScanComp
+Pages --> NotifComp
+Pages --> BlogComp
+
+Pages --> Routers
+Routers --> Controllers
+Controllers --> AppointmentSvc
+Controllers --> ScanSvc
+Controllers --> NotifSvc
+Controllers --> RecoSvc
+Controllers --> BlogSearchSvc
+Controllers --> ScanResultConsumer
+
+AppointmentSvc --> DB
+ScanSvc --> DB
+NotifSvc --> DB
+RecoSvc --> DB
+BlogSearchSvc --> DB
+ScanResultConsumer --> DB
+
+ScanSvc --> Uploads
+ScanSvc --> MQ
+MQ --> Worker
+Worker --> Models
+Worker --> Uploads
+Worker --> MQ
+MQ --> ScanResultConsumer
+NotifSvc --> Push
+
+@enduml

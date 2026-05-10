@@ -1,0 +1,72 @@
+@startuml
+left to right direction
+
+package "Application shell" {
+  component "root.jsx" as root
+  component Navbar as navbar
+  component "auth.js\ngetUser/getToken/setAuth/clearAuth" as authUtil
+}
+
+package Pages {
+  component "index.jsx" as home
+  component "profile.jsx" as profile
+  component "appointments.jsx" as appointments
+  component "ai-scan.jsx" as aiScan
+  component "notifications.jsx" as notifications
+  component "doctor-appointments.jsx" as doctorAppointments
+  component "doctor-profile.jsx" as doctorProfile
+  component "blog.jsx" as blog
+  component "blog-post.jsx" as blogPost
+}
+
+package "Feature components" {
+  component "authentication/login.jsx" as login
+  component "authentication/register.jsx" as register
+  component "appointments/create-appointment.jsx" as createAppointment
+  component "appointments/update-appointment.jsx" as updateAppointment
+  component "appointments/cancel-appointment.jsx" as cancelAppointment
+  component "appointments/doctor-update-appointment.jsx" as doctorUpdateAppointment
+  component "scans/create-scan.jsx" as createScan
+  component "appointments/appointment-attachments.jsx" as attachments
+}
+
+package "Backend API" {
+  component "Auth API" as authApi
+  component "Appointment API" as appointmentApi
+  component "Scan API" as scanApi
+  component "Notification and Push API" as notificationApi
+  component "Blog search API\npgvector semantic search" as blogApi
+}
+
+authUtil --> root --> navbar
+navbar --> home
+navbar --> profile
+navbar --> appointments
+navbar --> aiScan
+navbar --> notifications
+navbar --> doctorAppointments
+navbar --> doctorProfile
+navbar --> blog
+
+login --> authApi --> authUtil
+register --> authApi
+appointments --> appointmentApi
+appointments --> createAppointment --> appointmentApi
+appointments --> updateAppointment --> appointmentApi
+appointments --> cancelAppointment --> appointmentApi
+doctorAppointments --> appointmentApi
+doctorAppointments --> doctorUpdateAppointment --> appointmentApi
+doctorAppointments --> attachments --> appointmentApi
+doctorProfile --> appointmentApi
+blog --> blogApi
+blog ..> blogPost : slug link
+blogPost ..> appointments : book appointment CTA
+aiScan --> createScan --> scanApi
+aiScan --> scanApi
+notifications --> notificationApi
+
+authUtil ..> root : AUTH_CHANGED_EVENT
+notifications ..> navbar : NOTIFICATIONS_UNREAD_CHANGED_EVENT
+aiScan ..> scanApi : polling while processing
+
+@enduml
