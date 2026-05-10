@@ -1,6 +1,7 @@
 # Mermaid Diagram Pack
 
 This directory documents the project with Mermaid diagrams derived from the implemented codebase.
+Each Mermaid diagram has a PlantUML counterpart with the same basename and a `.puml` extension.
 
 ## Reading order
 
@@ -26,6 +27,7 @@ This directory documents the project with Mermaid diagrams derived from the impl
 - Scan result handling: `../dizertatie-ie-2026-backend/services/scan-result-service.js`
 - Notification pipeline: `../dizertatie-ie-2026-backend/services/notification-service.js`
 - Follow-up reminders: `../dizertatie-ie-2026-backend/services/follow-up-reminder-service.js`
+- Blog semantic search: `../dizertatie-ie-2026-backend/controllers/blog-controller.js`
 - Consumer runtime: `../dizertatie-ie-2026-consumer/worker.py`
 - Consumer routing and model loading: `../dizertatie-ie-2026-consumer/inference.py`, `../dizertatie-ie-2026-consumer/config.py`
 - Frontend shell/auth: `../dizertatie-ie-2026-frontend/app/root.jsx`, `../dizertatie-ie-2026-frontend/app/utils/auth.js`
@@ -38,3 +40,12 @@ This directory documents the project with Mermaid diagrams derived from the impl
 - The scan flow diagrams reflect the current implemented contract, including scan-level `bodyPart` and `imageType` in the RabbitMQ job payload.
 - The frontend scan result diagrams reflect the current multi-model result shape with `modelKey` and `routeKey`.
 - If the code changes, update the relevant Mermaid file instead of expanding one diagram until it becomes unreadable.
+
+## New PlantUML diagrams in Romanian
+
+- `12-cazuri-de-utilizare.puml` - diagrama de cazuri de utilizare
+- `13-activitate-flux-pacient.puml` - diagrama de activitate pentru fluxul pacientului
+- `14-masina-de-stari-programare.puml` - diagrama de masina de stari pentru programari
+- `15-interactiune-programare-follow-up.puml` - diagrama de interactiune pentru programare si follow-up
+- `16-componente-arhitectura.puml` - diagrama de componente a platformei
+- `17-relatii-entitati-erd.puml` - diagrama de relatii dintre entitati
