@@ -1,0 +1,37 @@
+@startuml
+left to right direction
+
+actor Patient
+actor Doctor
+
+rectangle "Medical AI Platform" {
+  component "Frontend\nReact Router + Vite" as frontend
+  component "Backend API\nNode.js + Express" as backend
+  component "AI Consumer\nPython + TensorFlow" as consumer
+}
+
+cloud "Infrastructure" {
+  database "SQLite or PostgreSQL" as db
+  queue "RabbitMQ" as mq
+  folder "Shared uploads storage" as uploads
+  folder "Keras model files" as models
+}
+
+component "Web Push Service" as push
+
+Patient --> frontend : authenticate, book, upload scans, view results, read blog
+Doctor --> frontend : manage appointments, add diagnoses and follow-up dates, view profile
+frontend --> backend : REST API + Bearer token
+backend --> db : persist entities
+backend --> uploads : write uploaded files
+backend --> mq : publish scan jobs
+mq --> consumer : deliver scan jobs
+consumer --> uploads : read image files
+consumer --> models : load models
+consumer --> mq : publish scan results
+mq --> backend : deliver result events
+backend --> db : create notifications
+backend --> push : send push payloads
+push --> Patient : browser notifications
+
+@enduml

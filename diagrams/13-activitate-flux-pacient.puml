@@ -1,0 +1,36 @@
+@startuml
+start
+
+:Pacientul se autentifica;
+
+if (Are nevoie de consultatie?) then (da)
+  :Deschide pagina Programari;
+  :Alege specialitate, medic, clinica, data;
+  :Solicita sloturi disponibile;
+  :Confirma programarea;
+else (nu)
+  :Navigheaza in aplicatie;
+endif
+
+if (Are documente medicale?) then (da)
+  :Ataseaza documente la programare;
+endif
+
+if (Doreste evaluare AI?) then (da)
+  :Incarca 1..4 imagini scan;
+  :Backend publica job in coada;
+  :Worker ruleaza inferenta AI;
+  :Rezultatele sunt salvate;
+  :Pacientul primeste notificare;
+  :Pacientul vizualizeaza rezultatele AI;
+endif
+
+if (Medicul recomanda follow-up?) then (da)
+  :Pacientul vede buton de programare follow-up;
+  :Creeaza programare follow-up precompletata;
+endif
+
+:Pacientul poate cauta articole in blog;
+stop
+
+@enduml

@@ -1,0 +1,37 @@
+@startuml
+left to right direction
+
+package "Client runtime" {
+  node Browser
+  node "Service Worker\n/sw.js" as sw
+}
+
+package "Application host" {
+  node "Frontend dev server\nReact Router + Vite\nport 5173" as frontend
+  node "Backend service\nExpress\nport 9000" as backend
+  node "Worker process\nPython main.py" as consumer
+  folder uploads
+  folder "consumer/models/" as consumerModels
+  database "dizertatie.db" as sqlite
+}
+
+package "Docker services" {
+  node "RabbitMQ 4 Management\n5672 + 15672" as rabbit
+  database PostgreSQL as postgres
+  node "Adminer\nport 8080" as adminer
+}
+
+Browser --> frontend
+Browser --> sw
+frontend --> backend : HTTP JSON and multipart
+sw --> Browser : push events
+backend --> sqlite : default local DB
+backend --> postgres : optional external DB
+adminer --> postgres
+backend --> rabbit : publish jobs / consume results
+consumer --> rabbit : consume jobs / publish results
+backend --> uploads : save and optimize images
+consumer --> uploads : read scan files from shared path
+consumer --> consumerModels : load .keras files and class labels
+
+@enduml

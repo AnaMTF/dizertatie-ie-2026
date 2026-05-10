@@ -1,0 +1,47 @@
+@startuml
+left to right direction
+
+actor Pacient
+actor Medic
+actor "Serviciu Push" as Push
+
+rectangle "Platforma Medical AI" {
+  usecase "Autentificare" as UCAuth
+  usecase "Gestionare profil pacient" as UCProfilPacient
+  usecase "Gestionare profil medic" as UCProfilMedic
+  usecase "Vizualizare recomandari\nde specialitate" as UCRecomandari
+  usecase "Programare consultatie" as UCProgramare
+  usecase "Reprogramare sau anulare\nconsultatie" as UCUpdateProgramare
+  usecase "Incarcare scanare\nsi lansare inferenta AI" as UCScan
+  usecase "Vizualizare rezultate AI" as UCRezultateAI
+  usecase "Actualizare rezultat consultatie\nsi recomandare follow-up" as UCMedicOutcome
+  usecase "Programare follow-up" as UCFollowUp
+  usecase "Cautare articole blog" as UCBlog
+  usecase "Gestionare notificari" as UCNotificari
+  usecase "Abonare notificari push" as UCPush
+}
+
+Pacient --> UCAuth
+Pacient --> UCProfilPacient
+Pacient --> UCRecomandari
+Pacient --> UCProgramare
+Pacient --> UCUpdateProgramare
+Pacient --> UCScan
+Pacient --> UCRezultateAI
+Pacient --> UCFollowUp
+Pacient --> UCBlog
+Pacient --> UCNotificari
+Pacient --> UCPush
+
+Medic --> UCAuth
+Medic --> UCProfilMedic
+Medic --> UCUpdateProgramare
+Medic --> UCMedicOutcome
+
+Push --> UCNotificari
+
+UCRezultateAI ..> UCScan : <<include>>
+UCFollowUp ..> UCMedicOutcome : <<extend>>
+UCNotificari ..> UCPush : <<include>>
+
+@enduml

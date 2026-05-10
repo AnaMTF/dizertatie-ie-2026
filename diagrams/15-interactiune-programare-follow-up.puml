@@ -1,0 +1,38 @@
+@startuml
+actor Pacient
+actor Medic
+participant "UI Programari" as UI
+participant "API Backend" as API
+database "Baza de date" as DB
+
+Pacient -> UI : Deschide pagina Programari
+UI -> API : GET lista programari
+API -> DB : Citeste programari pacient
+DB --> API : Lista programari
+API --> UI : Lista programari
+
+Pacient -> UI : Creeaza programare noua
+UI -> API : POST programare
+API -> DB : Salveaza programare si atasamente
+DB --> API : Programare creata
+API --> UI : Confirmare creare
+
+Medic -> UI : Deschide programarile alocate
+UI -> API : GET programari medic
+API -> DB : Citeste programari medic
+DB --> API : Lista programari medic
+API --> UI : Lista programari medic
+
+Medic -> UI : Completeaza diagnostic, reteta, data follow-up
+UI -> API : PATCH programare
+API -> DB : Actualizeaza campuri medicale
+DB --> API : Programare actualizata
+API --> UI : Confirmare actualizare
+
+Pacient -> UI : Apasa Programare follow-up
+UI -> API : POST programare follow-up
+API -> DB : Creeaza programare follow-up
+DB --> API : Follow-up creat
+API --> UI : Confirmare follow-up
+
+@enduml

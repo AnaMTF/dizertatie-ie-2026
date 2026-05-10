@@ -1,0 +1,19 @@
+@startuml
+[*] --> Scheduled : patient creates appointment
+
+Scheduled --> Confirmed : doctor confirms consultation
+Scheduled --> Rescheduled : patient or doctor updates date or time
+Scheduled --> Cancelled : patient or doctor cancels
+
+Rescheduled --> Confirmed : doctor confirms updated slot
+Rescheduled --> Rescheduled : patient or doctor changes slot again
+Rescheduled --> Cancelled : patient or doctor cancels
+
+Confirmed --> Completed : doctor marks consultation complete
+Confirmed --> Rescheduled : patient or doctor changes slot
+Confirmed --> Cancelled : patient or doctor cancels
+
+Completed --> [*]
+Cancelled --> [*]
+
+@enduml

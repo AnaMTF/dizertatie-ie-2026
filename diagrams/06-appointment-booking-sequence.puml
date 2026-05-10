@@ -1,0 +1,47 @@
+@startuml
+actor Patient
+participant "appointments.jsx" as Page
+participant "create-appointment.jsx" as Modal
+participant "Backend appointment API" as API
+participant "Appointment + Doctor + Clinic models" as Models
+actor Doctor
+
+Patient -> Page : open Appointments page
+Page -> API : GET /appointment
+API -> Models : load patient appointments
+API --> Page : appointments list
+
+Patient -> Modal : open Create Appointment dialog
+Modal -> API : GET /doctor
+Modal -> API : GET /clinic
+API --> Modal : doctors and clinics
+
+Patient -> Modal : choose specialty
+Patient -> Modal : choose doctor and clinic
+Patient -> Modal : choose date
+Modal -> API : GET /appointment/availability?doctorUuid&date&clinicUuid
+API --> Modal : availableSlots[]
+Patient -> Modal : choose time, notes, optional documents
+Modal -> API : POST /appointment
+API -> Models : create appointment and documents
+API --> Modal : 201 created appointment
+Modal --> Page : onCreated callback
+Page -> API : refresh GET /appointment
+API --> Page : updated appointment list
+
+Doctor -> API : PATCH /appointment/:uuid (diagnosis, prescription, follow-up date)
+API -> Models : persist doctor outcome fields
+API --> Page : new appointment state on next refresh
+
+note over Patient, Doctor
+  Doctor sets doctorFollowUpDate -> patient sees "Book follow-up" button
+end note
+
+Patient -> Page : click "Book follow-up"
+Page -> Modal : open create-appointment pre-filled with specialty and follow-up date
+Patient -> Modal : confirm follow-up appointment details
+Modal -> API : POST /appointment
+API -> Models : create follow-up appointment
+API --> Page : follow-up appointment created
+
+@enduml

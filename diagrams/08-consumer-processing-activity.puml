@@ -1,0 +1,45 @@
+@startuml
+start
+:Job received from scan.jobs.v1;
+:Parse JSON payload;
+
+if (images list and\nscan-level imageType/bodyPart present?) then (no)
+  :Build failed result payload;
+  :Publish to scan.results.v1;
+  :Acknowledge job;
+  stop
+else (yes)
+  :Iterate over images;
+
+  repeat
+    :Resolve file path from filePath\nand storage.uploadsBasePath;
+
+    if (File exists?) then (no)
+      :Append image error;
+    else (yes)
+      :Resolve models from\nimageType + bodyPart + file path;
+
+      repeat
+        :Load or reuse cached Keras model;
+        :Resize + preprocess image;
+        :Run TensorFlow inference;
+        :Decode label, confidence, probabilities;
+        :Append result entry with\nimageUuid, modelKey, routeKey;
+      repeat while (More models for image?) is (yes)
+    endif
+  repeat while (More images?) is (yes)
+
+  :Build results object\nimages, errors, count, failedCount, total;
+
+  if (count > 0?) then (yes)
+    :Build completed scan.result.v1 payload;
+  else (no)
+    :Build failed result payload;
+  endif
+
+  :Publish to scan.results.v1;
+  :Acknowledge job;
+  stop
+endif
+
+@enduml

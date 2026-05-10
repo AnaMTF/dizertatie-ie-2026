@@ -1,0 +1,40 @@
+@startuml
+left to right direction
+
+package "Backend async subsystems" {
+  component "scan-service\npublishScanJob" as scanService
+  component "rabbitmq-service\nconnect + assert infra + consume" as rabbitService
+  component "scan-result-service\napplyScanResult" as scanResultService
+  component "startSchedulers\ncron 0 9 * * *" as scheduler
+  component "follow-up-reminder-service" as followUp
+  component "notification-service" as notificationService
+  component "web-push-service" as pushService
+}
+
+package RabbitMQ {
+  queue "scan.jobs.v1" as jobs
+  queue "scan.results.v1" as results
+  queue "scan.dlx" as dlx
+  queue "scan.jobs.v1.dlq" as jobsDlq
+  queue "scan.results.v1.dlq" as resultsDlq
+}
+
+package "Python consumer" {
+  component "run_worker" as workerLoop
+  component "process_scan_job" as processing
+}
+
+scanService --> rabbitService
+rabbitService --> jobs
+jobs --> workerLoop --> processing
+processing --> results
+results --> rabbitService --> scanResultService
+scanResultService --> notificationService --> pushService
+scheduler --> followUp --> notificationService
+
+jobs ..> dlx : dead-letter
+dlx --> jobsDlq
+results ..> dlx : dead-letter
+dlx --> resultsDlq
+
+@enduml
