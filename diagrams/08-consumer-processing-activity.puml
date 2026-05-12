@@ -3,7 +3,7 @@ start
 :Job received from scan.jobs.v1;
 :Parse JSON payload;
 
-if (images list and\nscan-level imageType/bodyPart present?) then (no)
+if (images list and scan-level imageType/bodyPart present?) then (no)
   :Build failed result payload;
   :Publish to scan.results.v1;
   :Acknowledge job;
@@ -11,25 +11,26 @@ if (images list and\nscan-level imageType/bodyPart present?) then (no)
 else (yes)
   :Iterate over images;
 
-  repeat
-    :Resolve file path from filePath\nand storage.uploadsBasePath;
+  while (More images?) is (yes)
+    :Resolve file path from filePath and storage.uploadsBasePath;
 
     if (File exists?) then (no)
       :Append image error;
     else (yes)
-      :Resolve models from\nimageType + bodyPart + file path;
+      :Resolve models from imageType + bodyPart + file path;
 
-      repeat
+      while (More models for image?) is (yes)
         :Load or reuse cached Keras model;
         :Resize + preprocess image;
         :Run TensorFlow inference;
         :Decode label, confidence, probabilities;
-        :Append result entry with\nimageUuid, modelKey, routeKey;
-      repeat while (More models for image?) is (yes)
-    endif
-  repeat while (More images?) is (yes)
+        :Append result entry with imageUuid, modelKey, routeKey;
+      endwhile
 
-  :Build results object\nimages, errors, count, failedCount, total;
+    endif
+  endwhile
+
+  :Build results object images, errors, count, failedCount, total;
 
   if (count > 0?) then (yes)
     :Build completed scan.result.v1 payload;

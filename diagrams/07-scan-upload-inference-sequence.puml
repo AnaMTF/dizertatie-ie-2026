@@ -1,5 +1,5 @@
 @startuml
-actor Patient
+actor PatientActor
 participant "ai-scan.jsx" as ScanPage
 participant "create-scan.jsx" as CreateModal
 participant "Backend scan API" as API
@@ -10,12 +10,12 @@ participant "ModelRegistry + TensorFlow" as Models
 participant applyScanResult as ResultService
 participant "notification-service" as Notifications
 
-Patient -> ScanPage : open AI Scans page
+PatientActor -> ScanPage : open AI Scans page
 ScanPage -> API : GET /scan/options
 API --> ScanPage : supported scan options
 
-Patient -> CreateModal : choose region and scan type
-Patient -> CreateModal : upload 1..4 images
+PatientActor -> CreateModal : choose region and scan type
+PatientActor -> CreateModal : upload 1..4 images
 CreateModal -> API : POST /scan (multipart + metadata)
 API -> Storage : persist uploaded image files
 API -> API : create Scan and ScanImage rows\nstatus=processing
@@ -50,6 +50,6 @@ end
 
 ScanPage -> API : poll refreshed scan state
 API --> ScanPage : completed results with modelKey and routeKey
-ScanPage --> Patient : render grouped predictions and optimized images
+ScanPage --> PatientActor : render grouped predictions and optimized images
 
 @enduml

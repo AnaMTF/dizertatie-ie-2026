@@ -2,8 +2,8 @@
 hide methods
 hide stereotypes
 
-entity "Patient" as Patient {
-  * uuid : UUID
+class EPatient as "Patient" {
+  +uuid : UUID
   --
   email : string
   firstName : string
@@ -12,8 +12,8 @@ entity "Patient" as Patient {
   dateOfBirth : date
 }
 
-entity "Doctor" as Doctor {
-  * uuid : UUID
+class EDoctor as "Doctor" {
+  +uuid : UUID
   --
   email : string
   firstName : string
@@ -21,15 +21,15 @@ entity "Doctor" as Doctor {
   specialization : enum
 }
 
-entity "Clinic" as Clinic {
-  * uuid : UUID
+class EClinic as "Clinic" {
+  +uuid : UUID
   --
   name : string
   address : string
 }
 
-entity "Appointment" as Appointment {
-  * uuid : UUID
+class EAppointment as "Appointment" {
+  +uuid : UUID
   --
   date : date
   timeSlot : string
@@ -37,74 +37,74 @@ entity "Appointment" as Appointment {
   doctorFollowUpDate : date
 }
 
-entity "AppointmentDocument" as AppointmentDocument {
-  * uuid : UUID
+class EAppointmentDocument as "AppointmentDocument" {
+  +uuid : UUID
   --
   filePath : string
   mimeType : string
 }
 
-entity "Scan" as Scan {
-  * uuid : UUID
+class EScan as "Scan" {
+  +uuid : UUID
   --
   status : enum
   bodyPart : string
   imageType : string
 }
 
-entity "ScanImage" as ScanImage {
-  * uuid : UUID
+class EScanImage as "ScanImage" {
+  +uuid : UUID
   --
   filePath : string
   mimeType : string
 }
 
-entity "Notification" as Notification {
-  * uuid : UUID
+class ENotification as "Notification" {
+  +uuid : UUID
   --
   type : enum
   title : string
   readAt : datetime
 }
 
-entity "PushSubscription" as PushSubscription {
-  * uuid : UUID
+class EPushSubscription as "PushSubscription" {
+  +uuid : UUID
   --
   endpoint : text
 }
 
-entity "FollowUpReminder" as FollowUpReminder {
-  * uuid : UUID
+class EFollowUpReminder as "FollowUpReminder" {
+  +uuid : UUID
   --
   reminderType : string
   sentAt : datetime
 }
 
-entity "AppointmentRecommendation" as AppointmentRecommendation {
-  * uuid : UUID
+class EAppointmentRecommendation as "AppointmentRecommendation" {
+  +uuid : UUID
   --
   source : enum
   specialty : string
   priority : enum
 }
 
-entity "PostEmbedding" as PostEmbedding {
-  * slug : string
+class EPostEmbedding as "PostEmbedding" {
+  +slug : string
   --
   embedding : vector384
 }
 
-Clinic ||--o{ Doctor : are
-Clinic ||--o{ Appointment : gazduieste
-Patient ||--o{ Appointment : face
-Doctor ||--o{ Appointment : gestioneaza
-Appointment ||--o{ AppointmentDocument : include
-Patient ||--o{ Scan : are
-Scan ||--o{ ScanImage : contine
-Patient ||--o{ Notification : primeste
-Patient ||--o{ PushSubscription : inregistreaza
-Patient ||--o{ FollowUpReminder : are
-Appointment ||--o{ FollowUpReminder : declanseaza
-Patient ||--o{ AppointmentRecommendation : primeste
+EClinic --> EDoctor : are
+EClinic --> EAppointment : gazduieste
+EPatient --> EAppointment : face
+EDoctor --> EAppointment : gestioneaza
+EAppointment --> EAppointmentDocument : include
+EPatient --> EScan : are
+EScan --> EScanImage : contine
+EPatient --> ENotification : primeste
+EPatient --> EPushSubscription : inregistreaza
+EPatient --> EFollowUpReminder : are
+EAppointment --> EFollowUpReminder : declanseaza
+EPatient --> EAppointmentRecommendation : primeste
 
 @enduml
