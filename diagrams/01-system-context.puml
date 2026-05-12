@@ -5,9 +5,9 @@ actor Patient
 actor Doctor
 
 package "Medical AI Platform" {
-  component frontend as "Frontend\nReact Router + Vite"
-  component backend as "Backend API\nNode.js + Express"
-  component consumer as "AI Consumer\nPython + TensorFlow"
+  component frontend as "Frontend React Router + Vite"
+  component backend as "Backend API Node.js + Express"
+  component consumer as "AI Consumer Python + TensorFlow"
 }
 
 package "Infrastructure" {
