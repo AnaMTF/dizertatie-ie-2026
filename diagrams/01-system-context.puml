@@ -4,20 +4,20 @@ left to right direction
 actor Patient
 actor Doctor
 
-rectangle "Medical AI Platform" {
-  component "Frontend\nReact Router + Vite" as frontend
-  component "Backend API\nNode.js + Express" as backend
-  component "AI Consumer\nPython + TensorFlow" as consumer
+package "Medical AI Platform" {
+  component frontend as "Frontend\nReact Router + Vite"
+  component backend as "Backend API\nNode.js + Express"
+  component consumer as "AI Consumer\nPython + TensorFlow"
 }
 
-cloud "Infrastructure" {
-  database "SQLite or PostgreSQL" as db
-  queue "RabbitMQ" as mq
-  folder "Shared uploads storage" as uploads
-  folder "Keras model files" as models
+package "Infrastructure" {
+  component db as "SQLite or PostgreSQL"
+  component mq as "RabbitMQ"
+  component uploads as "Shared uploads storage"
+  component models as "Keras model files"
 }
 
-component "Web Push Service" as push
+component push as "Web Push Service"
 
 Patient --> frontend : authenticate, book, upload scans, view results, read blog
 Doctor --> frontend : manage appointments, add diagnoses and follow-up dates, view profile
