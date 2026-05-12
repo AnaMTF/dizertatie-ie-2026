@@ -2,8 +2,8 @@
 hide methods
 hide stereotypes
 
-class EPatient as "Patient" {
-  +uuid : UUID
+entity Patient {
+  * uuid : UUID
   --
   email : string
   firstName : string
@@ -12,8 +12,8 @@ class EPatient as "Patient" {
   dateOfBirth : date
 }
 
-class EDoctor as "Doctor" {
-  +uuid : UUID
+entity Doctor {
+  * uuid : UUID
   --
   email : string
   firstName : string
@@ -21,15 +21,15 @@ class EDoctor as "Doctor" {
   specialization : enum
 }
 
-class EClinic as "Clinic" {
-  +uuid : UUID
+entity Clinic {
+  * uuid : UUID
   --
   name : string
   address : string
 }
 
-class EAppointment as "Appointment" {
-  +uuid : UUID
+entity Appointment {
+  * uuid : UUID
   --
   date : date
   timeSlot : string
@@ -37,74 +37,74 @@ class EAppointment as "Appointment" {
   doctorFollowUpDate : date
 }
 
-class EAppointmentDocument as "AppointmentDocument" {
-  +uuid : UUID
+entity AppointmentDocument {
+  * uuid : UUID
   --
   filePath : string
   mimeType : string
 }
 
-class EScan as "Scan" {
-  +uuid : UUID
+entity Scan {
+  * uuid : UUID
   --
   status : enum
   bodyPart : string
   imageType : string
 }
 
-class EScanImage as "ScanImage" {
-  +uuid : UUID
+entity ScanImage {
+  * uuid : UUID
   --
   filePath : string
   mimeType : string
 }
 
-class ENotification as "Notification" {
-  +uuid : UUID
+entity Notification {
+  * uuid : UUID
   --
   type : enum
   title : string
   readAt : datetime
 }
 
-class EPushSubscription as "PushSubscription" {
-  +uuid : UUID
+entity PushSubscription {
+  * uuid : UUID
   --
   endpoint : text
 }
 
-class EFollowUpReminder as "FollowUpReminder" {
-  +uuid : UUID
+entity FollowUpReminder {
+  * uuid : UUID
   --
   reminderType : string
   sentAt : datetime
 }
 
-class EAppointmentRecommendation as "AppointmentRecommendation" {
-  +uuid : UUID
+entity AppointmentRecommendation {
+  * uuid : UUID
   --
   source : enum
   specialty : string
   priority : enum
 }
 
-class EPostEmbedding as "PostEmbedding" {
-  +slug : string
+entity PostEmbedding {
+  * slug : string
   --
   embedding : vector384
 }
 
-EClinic --> EDoctor : are
-EClinic --> EAppointment : gazduieste
-EPatient --> EAppointment : face
-EDoctor --> EAppointment : gestioneaza
-EAppointment --> EAppointmentDocument : include
-EPatient --> EScan : are
-EScan --> EScanImage : contine
-EPatient --> ENotification : primeste
-EPatient --> EPushSubscription : inregistreaza
-EPatient --> EFollowUpReminder : are
-EAppointment --> EFollowUpReminder : declanseaza
-EPatient --> EAppointmentRecommendation : primeste
+Clinic "1" -- "*" Doctor : employs
+Clinic "1" -- "*" Appointment : hosts
+Patient "1" -- "*" Appointment : books
+Doctor "1" -- "*" Appointment : attends
+Appointment "1" -- "*" AppointmentDocument : has
+Patient "1" -- "*" Scan : owns
+Scan "1" -- "*" ScanImage : contains
+Patient "1" -- "*" Notification : receives
+Patient "1" -- "*" PushSubscription : registers
+Patient "1" -- "*" FollowUpReminder : accumulates
+Appointment "1" -- "*" FollowUpReminder : triggers
+Patient "1" -- "*" AppointmentRecommendation : gets
 
 @enduml

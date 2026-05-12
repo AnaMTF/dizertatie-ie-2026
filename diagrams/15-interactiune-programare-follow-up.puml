@@ -3,7 +3,7 @@ actor Pacient
 actor Medic
 participant "UI Programari" as UI
 participant "API Backend" as API
-database "Baza de date" as DB
+participant "Baza de date" as DB
 
 Pacient -> UI : Deschide pagina Programari
 UI -> API : GET lista programari
