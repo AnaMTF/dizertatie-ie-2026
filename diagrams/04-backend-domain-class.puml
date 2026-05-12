@@ -103,17 +103,17 @@ class PostEmbedding {
   +embedding: vector 384-dim
 }
 
-Clinic "1" --> "many" Doctor : employs
-Clinic "1" --> "many" Appointment : hosts
-Patient "1" --> "many" Appointment : books
-Doctor "1" --> "many" Appointment : attends
-Appointment "1" --> "many" AppointmentDocument : has
-Patient "1" --> "many" Scan : owns
-Scan "1" --> "many" ScanImage : contains
-Patient "1" --> "many" Notification : receives
-Patient "1" --> "many" PushSubscription : registers
-Patient "1" --> "many" FollowUpReminder : accumulates
-Appointment "1" --> "many" FollowUpReminder : triggers
-Patient "1" --> "many" AppointmentRecommendation : gets
+Clinic "1" -- "*" Doctor : employs
+Clinic "1" -- "*" Appointment : hosts
+Patient "1" -- "*" Appointment : books
+Doctor "1" -- "*" Appointment : attends
+Appointment "1" -- "*" AppointmentDocument : has
+Patient "1" -- "*" Scan : owns
+Scan "1" -- "*" ScanImage : contains
+Patient "1" -- "*" Notification : receives
+Patient "1" -- "*" PushSubscription : registers
+Patient "1" -- "*" FollowUpReminder : accumulates
+Appointment "1" -- "*" FollowUpReminder : triggers
+Patient "1" -- "*" AppointmentRecommendation : gets
 
 @enduml
