@@ -17,7 +17,7 @@ package "Backend Node.js" {
   [Servicii scan] as ScanSvc
   [Servicii notificari] as NotifSvc
   [Servicii recomandari] as RecoSvc
-  [Serviciu cautare blog\npgvector] as BlogSearchSvc
+  [Serviciu cautare blog pgvector] as BlogSearchSvc
   [Consumator rezultate scan] as ScanResultConsumer
 }
 
