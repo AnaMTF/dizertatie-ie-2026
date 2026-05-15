@@ -9,12 +9,12 @@ rectangle "Platforma Medical AI" {
   usecase "Autentificare" as UCAuth
   usecase "Gestionare profil pacient" as UCProfilPacient
   usecase "Gestionare profil medic" as UCProfilMedic
-  usecase "Vizualizare recomandari\nde specialitate" as UCRecomandari
+  usecase "Vizualizare recomandari de specialitate" as UCRecomandari
   usecase "Programare consultatie" as UCProgramare
-  usecase "Reprogramare sau anulare\nconsultatie" as UCUpdateProgramare
-  usecase "Incarcare scanare\nsi lansare inferenta AI" as UCScan
+  usecase "Reprogramare sau anulare consultatie" as UCUpdateProgramare
+  usecase "Incarcare scanare si lansare inferenta AI" as UCScan
   usecase "Vizualizare rezultate AI" as UCRezultateAI
-  usecase "Actualizare rezultat consultatie\nsi recomandare follow-up" as UCMedicOutcome
+  usecase "Actualizare rezultat consultatie si recomandare follow-up" as UCMedicOutcome
   usecase "Programare follow-up" as UCFollowUp
   usecase "Cautare articole blog" as UCBlog
   usecase "Gestionare notificari" as UCNotificari

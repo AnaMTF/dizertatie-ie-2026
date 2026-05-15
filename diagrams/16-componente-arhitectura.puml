@@ -17,14 +17,14 @@ package "Backend Node.js" {
   [Servicii scan] as ScanSvc
   [Servicii notificari] as NotifSvc
   [Servicii recomandari] as RecoSvc
-  [Serviciu cautare blog\npgvector] as BlogSearchSvc
+  [Serviciu cautare blog pgvector] as BlogSearchSvc
   [Consumator rezultate scan] as ScanResultConsumer
 }
 
 package "Infrastructura" {
-  database "PostgreSQL sau SQLite" as DB
-  queue "RabbitMQ" as MQ
-  folder "Stocare uploads" as Uploads
+  node "PostgreSQL sau SQLite" as DB
+  node "RabbitMQ" as MQ
+  node "Stocare uploads" as Uploads
   [Worker Python inferenta] as Worker
   [Modele TensorFlow Keras] as Models
   [Web Push] as Push
