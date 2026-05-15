@@ -2,7 +2,7 @@
 hide methods
 hide stereotypes
 
-entity "Patient" as Patient {
+entity Patient {
   * uuid : UUID
   --
   email : string
@@ -12,7 +12,7 @@ entity "Patient" as Patient {
   dateOfBirth : date
 }
 
-entity "Doctor" as Doctor {
+entity Doctor {
   * uuid : UUID
   --
   email : string
@@ -21,14 +21,14 @@ entity "Doctor" as Doctor {
   specialization : enum
 }
 
-entity "Clinic" as Clinic {
+entity Clinic {
   * uuid : UUID
   --
   name : string
   address : string
 }
 
-entity "Appointment" as Appointment {
+entity Appointment {
   * uuid : UUID
   --
   date : date
@@ -37,14 +37,14 @@ entity "Appointment" as Appointment {
   doctorFollowUpDate : date
 }
 
-entity "AppointmentDocument" as AppointmentDocument {
+entity AppointmentDocument {
   * uuid : UUID
   --
   filePath : string
   mimeType : string
 }
 
-entity "Scan" as Scan {
+entity Scan {
   * uuid : UUID
   --
   status : enum
@@ -52,14 +52,14 @@ entity "Scan" as Scan {
   imageType : string
 }
 
-entity "ScanImage" as ScanImage {
+entity ScanImage {
   * uuid : UUID
   --
   filePath : string
   mimeType : string
 }
 
-entity "Notification" as Notification {
+entity Notification {
   * uuid : UUID
   --
   type : enum
@@ -67,20 +67,20 @@ entity "Notification" as Notification {
   readAt : datetime
 }
 
-entity "PushSubscription" as PushSubscription {
+entity PushSubscription {
   * uuid : UUID
   --
   endpoint : text
 }
 
-entity "FollowUpReminder" as FollowUpReminder {
+entity FollowUpReminder {
   * uuid : UUID
   --
   reminderType : string
   sentAt : datetime
 }
 
-entity "AppointmentRecommendation" as AppointmentRecommendation {
+entity AppointmentRecommendation {
   * uuid : UUID
   --
   source : enum
@@ -88,23 +88,23 @@ entity "AppointmentRecommendation" as AppointmentRecommendation {
   priority : enum
 }
 
-entity "PostEmbedding" as PostEmbedding {
+entity PostEmbedding {
   * slug : string
   --
   embedding : vector384
 }
 
-Clinic ||--o{ Doctor : are
-Clinic ||--o{ Appointment : gazduieste
-Patient ||--o{ Appointment : face
-Doctor ||--o{ Appointment : gestioneaza
-Appointment ||--o{ AppointmentDocument : include
-Patient ||--o{ Scan : are
-Scan ||--o{ ScanImage : contine
-Patient ||--o{ Notification : primeste
-Patient ||--o{ PushSubscription : inregistreaza
-Patient ||--o{ FollowUpReminder : are
-Appointment ||--o{ FollowUpReminder : declanseaza
-Patient ||--o{ AppointmentRecommendation : primeste
+Clinic "1" -- "*" Doctor : employs
+Clinic "1" -- "*" Appointment : hosts
+Patient "1" -- "*" Appointment : books
+Doctor "1" -- "*" Appointment : attends
+Appointment "1" -- "*" AppointmentDocument : has
+Patient "1" -- "*" Scan : owns
+Scan "1" -- "*" ScanImage : contains
+Patient "1" -- "*" Notification : receives
+Patient "1" -- "*" PushSubscription : registers
+Patient "1" -- "*" FollowUpReminder : accumulates
+Appointment "1" -- "*" FollowUpReminder : triggers
+Patient "1" -- "*" AppointmentRecommendation : gets
 
 @enduml

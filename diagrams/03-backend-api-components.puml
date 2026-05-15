@@ -2,53 +2,53 @@
 left to right direction
 
 package Bootstrap {
-  component "index.js" as entry
-  component "Helmet + CORS + Morgan\nBody parsing + rate limiting" as middleware
-  component startSchedulers as schedulers
-  component "Scan result consumer startup" as resultConsumer
+  node "index.js" as entry
+  node "Helmet + CORS + Morgan Body parsing + rate limiting" as middleware
+  node startSchedulers as schedulers
+  node "Scan result consumer startup" as resultConsumer
 }
 
 package "API routers" {
-  component authenticationRouter as authRouter
-  component patientRouter as patientRouter
-  component doctorRouter as doctorRouter
-  component clinicRouter as clinicRouter
-  component appointmentRouter as appointmentRouter
-  component appointmentRecommendationRouter as recommendationRouter
-  component scanRouter as scanRouter
-  component notificationRouter as notificationRouter
-  component pushRouter as pushRouter
-  component blogRouter as blogRouter
+  node authenticationRouter as authRouter
+  node patientRouter as patientRouter
+  node doctorRouter as doctorRouter
+  node clinicRouter as clinicRouter
+  node appointmentRouter as appointmentRouter
+  node appointmentRecommendationRouter as recommendationRouter
+  node scanRouter as scanRouter
+  node notificationRouter as notificationRouter
+  node pushRouter as pushRouter
+  node blogRouter as blogRouter
 }
 
 package Controllers {
-  component "authentication-controller" as authController
-  component "patient-controller" as patientController
-  component "doctor-controller" as doctorController
-  component "clinic-controller" as clinicController
-  component "appointment-controller" as appointmentController
-  component "appointment-recommendation-controller" as recommendationController
-  component "scan-controller" as scanController
-  component "notification-controller" as notificationController
-  component "push-controller" as pushController
-  component "blog-controller" as blogController
+  node "authentication-controller" as authController
+  node "patient-controller" as patientController
+  node "doctor-controller" as doctorController
+  node "clinic-controller" as clinicController
+  node "appointment-controller" as appointmentController
+  node "appointment-recommendation-controller" as recommendationController
+  node "scan-controller" as scanController
+  node "notification-controller" as notificationController
+  node "push-controller" as pushController
+  node "blog-controller" as blogController
 }
 
 package "Core services" {
-  component "authentication-service" as authService
-  component "appointment-service" as appointmentService
-  component "appointment-recommendation-service" as recommendationService
-  component "appointment-recommendation-engine" as recommendationEngine
-  component "scan-service" as scanService
-  component "scan-result-service" as scanResultService
-  component "rabbitmq-service" as rabbitService
-  component "notification-service" as notificationService
-  component "web-push-service" as pushService
-  component "follow-up-reminder-service" as followUpService
-  component "blog-embedding-service\npgvector cosine search" as blogEmbeddingService
+  node "authentication-service" as authService
+  node "appointment-service" as appointmentService
+  node "appointment-recommendation-service" as recommendationService
+  node "appointment-recommendation-engine" as recommendationEngine
+  node "scan-service" as scanService
+  node "scan-result-service" as scanResultService
+  node "rabbitmq-service" as rabbitService
+  node "notification-service" as notificationService
+  node "web-push-service" as pushService
+  node "follow-up-reminder-service" as followUpService
+  node "blog-embedding-service pgvector cosine search" as blogEmbeddingService
 }
 
-database "Sequelize database" as database
+node "Sequelize database" as db
 
 entry --> middleware
 entry --> authRouter
@@ -64,18 +64,37 @@ entry --> blogRouter
 entry --> resultConsumer
 entry --> schedulers
 
-authRouter --> authController --> authService --> database
-patientRouter --> patientController --> database
-doctorRouter --> doctorController --> database
-clinicRouter --> clinicController --> database
-appointmentRouter --> appointmentController --> appointmentService --> database
-recommendationRouter --> recommendationController --> recommendationService --> recommendationEngine --> database
-scanRouter --> scanController --> scanService --> database
-notificationRouter --> notificationController --> notificationService --> database
-pushRouter --> pushController --> notificationService
-pushController --> pushService
-resultConsumer --> rabbitService --> scanResultService --> notificationService
-schedulers --> followUpService --> notificationService
-blogRouter --> blogController --> blogEmbeddingService --> database
+authRouter --> authController
+authController --> authService
+authService --> db
+patientRouter --> patientController
+patientController --> db
+doctorRouter --> doctorController
+doctorController --> db
+clinicRouter --> clinicController
+clinicController --> db
+appointmentRouter --> appointmentController
+appointmentController --> appointmentService
+appointmentService --> db
+recommendationRouter --> recommendationController
+recommendationController --> recommendationService
+recommendationService --> recommendationEngine
+recommendationEngine --> db
+scanRouter --> scanController
+scanController --> scanService
+scanService --> db
+notificationRouter --> notificationController
+notificationController --> notificationService
+notificationService --> db
+pushRouter --> pushController
+pushController --> notificationService
+resultConsumer --> rabbitService
+rabbitService --> scanResultService
+scanResultService --> notificationService
+schedulers --> followUpService
+followUpService --> notificationService
+blogRouter --> blogController
+blogController --> blogEmbeddingService
+blogEmbeddingService --> db
 
 @enduml

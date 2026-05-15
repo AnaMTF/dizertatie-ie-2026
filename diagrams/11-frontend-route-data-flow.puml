@@ -4,7 +4,7 @@ left to right direction
 package "Application shell" {
   component "root.jsx" as root
   component Navbar as navbar
-  component "auth.js\ngetUser/getToken/setAuth/clearAuth" as authUtil
+  component "auth.js getUser/getToken/setAuth/clearAuth" as authUtil
 }
 
 package Pages {
@@ -35,10 +35,11 @@ package "Backend API" {
   component "Appointment API" as appointmentApi
   component "Scan API" as scanApi
   component "Notification and Push API" as notificationApi
-  component "Blog search API\npgvector semantic search" as blogApi
+  component "Blog search API pgvector semantic search" as blogApi
 }
 
-authUtil --> root --> navbar
+authUtil --> root
+root --> navbar
 navbar --> home
 navbar --> profile
 navbar --> appointments
@@ -48,20 +49,27 @@ navbar --> doctorAppointments
 navbar --> doctorProfile
 navbar --> blog
 
-login --> authApi --> authUtil
+login --> authApi
+authApi --> authUtil
 register --> authApi
 appointments --> appointmentApi
-appointments --> createAppointment --> appointmentApi
-appointments --> updateAppointment --> appointmentApi
-appointments --> cancelAppointment --> appointmentApi
+appointments --> createAppointment
+createAppointment --> appointmentApi
+appointments --> updateAppointment
+updateAppointment --> appointmentApi
+appointments --> cancelAppointment
+cancelAppointment --> appointmentApi
 doctorAppointments --> appointmentApi
-doctorAppointments --> doctorUpdateAppointment --> appointmentApi
-doctorAppointments --> attachments --> appointmentApi
+doctorAppointments --> doctorUpdateAppointment
+doctorUpdateAppointment --> appointmentApi
+doctorAppointments --> attachments
+attachments --> appointmentApi
 doctorProfile --> appointmentApi
 blog --> blogApi
 blog ..> blogPost : slug link
 blogPost ..> appointments : book appointment CTA
-aiScan --> createScan --> scanApi
+aiScan --> createScan
+createScan --> scanApi
 aiScan --> scanApi
 notifications --> notificationApi
 
