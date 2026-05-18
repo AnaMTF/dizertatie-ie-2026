@@ -9,6 +9,8 @@ participant "Python worker" as Worker
 participant "ModelRegistry + TensorFlow" as Models
 participant applyScanResult as ResultService
 participant "notification-service" as Notifications
+participant "appointments.jsx" as AppointmentsPage
+participant "create-appointment.jsx" as AppointmentModal
 
 PatientActor -> ScanPage : open AI Scans page
 ScanPage -> API : GET /scan/options
@@ -51,5 +53,12 @@ end
 ScanPage -> API : poll refreshed scan state
 API --> ScanPage : completed results with modelKey and routeKey
 ScanPage --> PatientActor : render grouped predictions and optimized images
+
+PatientActor -> ScanPage : click "Book appointment"
+ScanPage -> AppointmentsPage : navigate to /appointments?create=true&specialty=...
+AppointmentsPage -> AppointmentModal : open create appointment with specialty prefilled
+note over AppointmentModal
+  Favorite clinic is preselected in the appointment modal.
+end note
 
 @enduml

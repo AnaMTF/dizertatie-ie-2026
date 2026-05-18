@@ -8,6 +8,7 @@ actor "Serviciu Push" as Push
 rectangle "Platforma Medical AI" {
   usecase "Autentificare" as UCAuth
   usecase "Gestionare profil pacient" as UCProfilPacient
+  usecase "Selectare clinica preferata" as UCClinicaPreferata
   usecase "Gestionare profil medic" as UCProfilMedic
   usecase "Vizualizare recomandari de specialitate" as UCRecomandari
   usecase "Programare consultatie" as UCProgramare
@@ -23,6 +24,7 @@ rectangle "Platforma Medical AI" {
 
 Pacient --> UCAuth
 Pacient --> UCProfilPacient
+Pacient --> UCClinicaPreferata
 Pacient --> UCRecomandari
 Pacient --> UCProgramare
 Pacient --> UCUpdateProgramare
@@ -41,6 +43,7 @@ Medic --> UCMedicOutcome
 Push --> UCNotificari
 
 UCRezultateAI ..> UCScan : <<include>>
+UCProgramare ..> UCClinicaPreferata : <<include>>
 UCFollowUp ..> UCMedicOutcome : <<extend>>
 UCNotificari ..> UCPush : <<include>>
 

@@ -13,6 +13,10 @@ API -> Models : load patient appointments
 API --> Page : appointments list
 
 Patient -> Modal : open Create Appointment dialog
+note over Modal
+  Favorite clinic is preselected from the patient profile
+  when the modal opens.
+end note
 Modal -> API : GET /doctor
 Modal -> API : GET /clinic
 API --> Modal : doctors and clinics
@@ -54,6 +58,10 @@ end note
 
 Patient -> Page : click "Book follow-up"
 Page -> Modal : open create-appointment pre-filled with specialty and follow-up date
+note over Modal
+  Follow-up clinic from the original appointment overrides
+  the favorite clinic when it is available.
+end note
 Patient -> Modal : confirm follow-up appointment details
 Modal -> API : POST /appointment
 API -> Models : create follow-up appointment

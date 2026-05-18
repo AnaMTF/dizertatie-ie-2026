@@ -5,7 +5,11 @@ start
 
 if (Are nevoie de consultatie?) then (da)
   :Deschide pagina Programari;
-  :Alege specialitate, medic, clinica, data;
+  :Alege specialitate, medic, data;
+  note right
+    Clinica preferata este preselectata
+    din profilul pacientului.
+  end note
   :Solicita sloturi disponibile;
   :Confirma programarea;
 else (nu)

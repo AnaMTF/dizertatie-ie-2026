@@ -5,18 +5,29 @@ participant "auth.js + root.jsx" as FE
 participant "Backend /api/v1/auth" as API
 participant localStorage as Storage
 participant "Navbar + protected pages" as Navbar
+participant "Clinic API" as ClinicAPI
 
 User -> UI : submit register or login form
-UI -> API : POST /auth/register or POST /auth/login
-API --> UI : user payload or { user, token }
 
 alt login success
+  UI -> API : POST /auth/login
+  API --> UI : { user, token }
   UI -> FE : setAuth({ user, token })
   FE -> Storage : store user JSON and token
   FE -> FE : dispatch AUTH_CHANGED_EVENT
   FE -> Navbar : root.jsx updates currentUser
   Navbar --> User : role-aware navigation and protected access
 else register success
+  UI -> ClinicAPI : GET /clinic
+  ClinicAPI --> UI : clinics list
+  User -> UI : select favorite clinic during signup
+  UI -> API : POST /auth/register
+  API --> UI : user payload or { user, token }
+  UI -> FE : setAuth({ user, token })
+  FE -> Storage : store user JSON and token
+  FE -> FE : dispatch AUTH_CHANGED_EVENT
+  FE -> Navbar : root.jsx updates currentUser
+  Navbar --> User : role-aware navigation and protected access
   UI --> User : registration finished
 end
 
