@@ -4,6 +4,7 @@ participant "appointments.jsx" as Page
 participant "create-appointment.jsx" as Modal
 participant "Backend appointment API" as API
 participant "Appointment + Doctor + Clinic models" as Models
+participant "Notification service" as Notif
 actor Doctor
 
 Patient -> Page : open Appointments page
@@ -24,6 +25,8 @@ API --> Modal : availableSlots[]
 Patient -> Modal : choose time, notes, optional documents
 Modal -> API : POST /appointment
 API -> Models : create appointment and documents
+API -> Notif : create doctor_new_appointment
+Notif --> Doctor : browser notification + in-app notification
 API --> Modal : 201 created appointment
 Modal --> Page : onCreated callback
 Page -> API : refresh GET /appointment
@@ -32,6 +35,18 @@ API --> Page : updated appointment list
 Doctor -> API : PATCH /appointment/:uuid (diagnosis, prescription, follow-up date)
 API -> Models : persist doctor outcome fields
 API --> Page : new appointment state on next refresh
+
+Patient -> Page : reschedule appointment
+Page -> API : PATCH /appointment/:uuid (date/time)
+API -> Models : persist rescheduled slot
+API -> Notif : create doctor_appointment_rescheduled
+Notif --> Doctor : browser notification + in-app notification
+
+Patient -> Page : cancel appointment
+Page -> API : PATCH /appointment/:uuid (status=cancelled)
+API -> Models : persist cancellation
+API -> Notif : create doctor_appointment_cancelled
+Notif --> Doctor : browser notification + in-app notification
 
 note over Patient, Doctor
   Doctor sets doctorFollowUpDate -> patient sees "Book follow-up" button

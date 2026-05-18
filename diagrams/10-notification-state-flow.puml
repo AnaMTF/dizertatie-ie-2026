@@ -1,6 +1,6 @@
 @startuml
 [*] --> Triggered
-Triggered --> Persisted : createNotification()
+Triggered --> Persisted : createNotification(recipientRole, recipientUuid)
 
 Persisted --> PushAttempted : sendPush=true
 Persisted --> Unread : sendPush=false
@@ -18,5 +18,17 @@ Opened --> Read : mark as read then navigate
 Read --> Deleted : delete notification
 Unread --> Deleted : delete notification
 Deleted --> [*]
+
+note right of Triggered
+	Appointment events:
+	- doctor_new_appointment
+	- doctor_appointment_rescheduled
+	- doctor_appointment_cancelled
+end note
+
+note right of Unread
+	Recipients can be patient or doctor.
+	data.url deep-links to the role-specific page.
+end note
 
 @enduml

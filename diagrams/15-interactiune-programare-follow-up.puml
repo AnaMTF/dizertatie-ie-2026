@@ -3,6 +3,7 @@ actor Pacient
 actor Medic
 participant "UI Programari" as UI
 participant "API Backend" as API
+participant "Serviciu notificari" as Notif
 participant "Baza de date" as DB
 
 Pacient -> UI : Deschide pagina Programari
@@ -15,7 +16,23 @@ Pacient -> UI : Creeaza programare noua
 UI -> API : POST programare
 API -> DB : Salveaza programare si atasamente
 DB --> API : Programare creata
+API -> Notif : Creeaza notificare doctor_new_appointment
+Notif --> Medic : Notificare browser + in aplicatie
 API --> UI : Confirmare creare
+
+Pacient -> UI : Reprogrameaza programarea
+UI -> API : PATCH programare (data/interval)
+API -> DB : Actualizeaza slotul programarii
+DB --> API : Programare reprogramata
+API -> Notif : Creeaza notificare doctor_appointment_rescheduled
+Notif --> Medic : Notificare browser + in aplicatie
+
+Pacient -> UI : Anuleaza programarea
+UI -> API : PATCH programare (status anulat)
+API -> DB : Salveaza anularea
+DB --> API : Programare anulata
+API -> Notif : Creeaza notificare doctor_appointment_cancelled
+Notif --> Medic : Notificare browser + in aplicatie
 
 Medic -> UI : Deschide programarile alocate
 UI -> API : GET programari medic

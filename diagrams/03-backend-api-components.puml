@@ -76,6 +76,7 @@ clinicController --> db
 appointmentRouter --> appointmentController
 appointmentController --> appointmentService
 appointmentService --> db
+appointmentService --> notificationService
 recommendationRouter --> recommendationController
 recommendationController --> recommendationService
 recommendationService --> recommendationEngine
