@@ -52,9 +52,11 @@ navbar --> blog
 login --> authApi
 authApi --> authUtil
 register --> authApi
+register ..> authApi : favoriteClinicUuid in signup payload
 appointments --> appointmentApi
 appointments --> createAppointment
 createAppointment --> appointmentApi
+createAppointment ..> authUtil : reads favoriteClinicUuid
 appointments --> updateAppointment
 updateAppointment --> appointmentApi
 appointments --> cancelAppointment
@@ -71,6 +73,7 @@ blogPost ..> appointments : book appointment CTA
 aiScan --> createScan
 createScan --> scanApi
 aiScan --> scanApi
+aiScan ..> appointments : Book appointment CTA
 notifications --> notificationApi
 
 authUtil ..> root : AUTH_CHANGED_EVENT

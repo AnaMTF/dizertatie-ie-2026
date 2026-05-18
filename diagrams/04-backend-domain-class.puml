@@ -9,6 +9,7 @@ class Patient {
   +dateOfBirth: date
   +height: float
   +weight: float
+  +favoriteClinicUuid: UUID?
   +additionalMedicalInfo: text
 }
 
@@ -105,6 +106,7 @@ class PostEmbedding {
 
 Clinic "1" -- "*" Doctor : employs
 Clinic "1" -- "*" Appointment : hosts
+Patient "1" -- "0..1" Clinic : prefers
 Patient "1" -- "*" Appointment : books
 Doctor "1" -- "*" Appointment : attends
 Appointment "1" -- "*" AppointmentDocument : has

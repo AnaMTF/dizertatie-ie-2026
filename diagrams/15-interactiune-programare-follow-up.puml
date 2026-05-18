@@ -47,6 +47,10 @@ DB --> API : Programare actualizata
 API --> UI : Confirmare actualizare
 
 Pacient -> UI : Apasa Programare follow-up
+note right of UI
+	Clinica din programarea initiala se pastreaza
+	si suprascrie clinica preferata daca exista.
+end note
 UI -> API : POST programare follow-up
 API -> DB : Creeaza programare follow-up
 DB --> API : Follow-up creat

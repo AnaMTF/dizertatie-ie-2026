@@ -10,6 +10,7 @@ entity Patient {
   lastName : string
   sex : enum
   dateOfBirth : date
+  favoriteClinicUuid : UUID
 }
 
 entity Doctor {
@@ -96,6 +97,7 @@ entity PostEmbedding {
 
 Clinic "1" -- "*" Doctor : employs
 Clinic "1" -- "*" Appointment : hosts
+Patient "1" -- "0..1" Clinic : prefers
 Patient "1" -- "*" Appointment : books
 Doctor "1" -- "*" Appointment : attends
 Appointment "1" -- "*" AppointmentDocument : has
