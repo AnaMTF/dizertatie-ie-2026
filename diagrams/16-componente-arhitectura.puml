@@ -46,6 +46,7 @@ Controllers --> BlogSearchSvc
 Controllers --> ScanResultConsumer
 
 AppointmentSvc --> DB
+AppointmentSvc --> NotifSvc : evenimente programare
 ScanSvc --> DB
 NotifSvc --> DB
 RecoSvc --> DB
