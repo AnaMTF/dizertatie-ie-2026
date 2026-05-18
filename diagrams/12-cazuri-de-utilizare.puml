@@ -18,6 +18,7 @@ rectangle "Platforma Medical AI" {
   usecase "Actualizare rezultat consultatie si recomandare follow-up" as UCMedicOutcome
   usecase "Programare follow-up" as UCFollowUp
   usecase "Cautare articole blog" as UCBlog
+  usecase "Salvare articole blog la favorite" as UCFavoriteBlog
   usecase "Gestionare notificari" as UCNotificari
   usecase "Abonare notificari push" as UCPush
 }
@@ -32,6 +33,7 @@ Pacient --> UCScan
 Pacient --> UCRezultateAI
 Pacient --> UCFollowUp
 Pacient --> UCBlog
+Pacient --> UCFavoriteBlog
 Pacient --> UCNotificari
 Pacient --> UCPush
 
@@ -39,6 +41,8 @@ Medic --> UCAuth
 Medic --> UCProfilMedic
 Medic --> UCUpdateProgramare
 Medic --> UCMedicOutcome
+Medic --> UCBlog
+Medic --> UCFavoriteBlog
 
 Push --> UCNotificari
 
@@ -46,5 +50,6 @@ UCRezultateAI ..> UCScan : <<include>>
 UCProgramare ..> UCClinicaPreferata : <<include>>
 UCFollowUp ..> UCMedicOutcome : <<extend>>
 UCNotificari ..> UCPush : <<include>>
+UCFavoriteBlog ..> UCBlog : <<include>>
 
 @enduml

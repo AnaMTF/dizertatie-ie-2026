@@ -95,6 +95,15 @@ entity PostEmbedding {
   embedding : vector384
 }
 
+entity FavoritePost {
+  * uuid : UUID
+  --
+  recipientRole : enum(patient|doctor)
+  recipientUuid : UUID
+  postSlug : string
+  createdAt : datetime
+}
+
 Clinic "1" -- "*" Doctor : employs
 Clinic "1" -- "*" Appointment : hosts
 Patient "1" -- "0..1" Clinic : prefers
@@ -108,5 +117,8 @@ Patient "1" -- "*" PushSubscription : registers
 Patient "1" -- "*" FollowUpReminder : accumulates
 Appointment "1" -- "*" FollowUpReminder : triggers
 Patient "1" -- "*" AppointmentRecommendation : gets
+PostEmbedding "1" -- "*" FavoritePost : indexed by slug
+Patient "1" .. "*" FavoritePost : recipientRole=patient
+Doctor "1" .. "*" FavoritePost : recipientRole=doctor
 
 @enduml

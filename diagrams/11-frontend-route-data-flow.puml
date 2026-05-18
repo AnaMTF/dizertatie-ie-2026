@@ -36,6 +36,7 @@ package "Backend API" {
   component "Scan API" as scanApi
   component "Notification and Push API" as notificationApi
   component "Blog search API pgvector semantic search" as blogApi
+  component "Blog favorites API" as blogFavoritesApi
 }
 
 authUtil --> root
@@ -68,7 +69,11 @@ doctorAppointments --> attachments
 attachments --> appointmentApi
 doctorProfile --> appointmentApi
 blog --> blogApi
+blog --> blogFavoritesApi
 blog ..> blogPost : slug link
+blogPost --> blogFavoritesApi
+profile --> blogFavoritesApi
+doctorProfile --> blogFavoritesApi
 blogPost ..> appointments : book appointment CTA
 aiScan --> createScan
 createScan --> scanApi

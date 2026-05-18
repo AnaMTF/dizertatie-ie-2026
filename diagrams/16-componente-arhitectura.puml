@@ -18,6 +18,7 @@ package "Backend Node.js" {
   [Servicii notificari] as NotifSvc
   [Servicii recomandari] as RecoSvc
   [Serviciu cautare blog pgvector] as BlogSearchSvc
+  [Serviciu favorite blog] as BlogFavoriteSvc
   [Consumator rezultate scan] as ScanResultConsumer
 }
 
@@ -43,6 +44,7 @@ Controllers --> ScanSvc
 Controllers --> NotifSvc
 Controllers --> RecoSvc
 Controllers --> BlogSearchSvc
+Controllers --> BlogFavoriteSvc
 Controllers --> ScanResultConsumer
 
 AppointmentSvc --> DB
@@ -51,6 +53,7 @@ ScanSvc --> DB
 NotifSvc --> DB
 RecoSvc --> DB
 BlogSearchSvc --> DB
+BlogFavoriteSvc --> DB
 ScanResultConsumer --> DB
 
 ScanSvc --> Uploads

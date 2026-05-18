@@ -32,6 +32,7 @@ package Controllers {
   node "notification-controller" as notificationController
   node "push-controller" as pushController
   node "blog-controller" as blogController
+  node "blog-favorite-controller" as blogFavoriteController
 }
 
 package "Core services" {
@@ -46,6 +47,7 @@ package "Core services" {
   node "web-push-service" as pushService
   node "follow-up-reminder-service" as followUpService
   node "blog-embedding-service pgvector cosine search" as blogEmbeddingService
+  node "blog-favorite-service" as blogFavoriteService
 }
 
 node "Sequelize database" as db
@@ -97,5 +99,8 @@ followUpService --> notificationService
 blogRouter --> blogController
 blogController --> blogEmbeddingService
 blogEmbeddingService --> db
+blogRouter --> blogFavoriteController
+blogFavoriteController --> blogFavoriteService
+blogFavoriteService --> db
 
 @enduml

@@ -35,6 +35,10 @@ if (Medicul recomanda follow-up?) then (da)
 endif
 
 :Pacientul poate cauta articole in blog;
+if (Doreste sa salveze un articol?) then (da)
+  :Marcheaza articolul ca favorit;
+  :Articolul apare in sectiunea Favorite din profil;
+endif
 stop
 
 @enduml
