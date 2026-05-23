@@ -13,3 +13,6 @@
 [submodule "dizertatie-ie-2026-postgresql"]
 	path = dizertatie-ie-2026-postgresql
 	url = https://github.com/AnaMTF/dizertatie-ie-2026-postgresql
+[submodule "medical-ai-model"]
+	path = medical-ai-model
+	url = https://github.com/AnaMTF/medical-ai-model
